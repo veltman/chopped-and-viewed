@@ -1,6 +1,6 @@
 {
   "name": "chopped-and-viewed",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "For chopping fixed-width text files into JSON or a CSV",
   "main": "index.js",
   "scripts": {
