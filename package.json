@@ -1,6 +1,6 @@
 {
   "name": "chopped-and-viewed",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "For chopping fixed-width text files into JSON or a CSV",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/veltman/chopped-and-screwed.git"
+    "url": "https://github.com/veltman/chopped-and-viewed.git"
   },
   "keywords": [
     "csv",
@@ -19,9 +19,9 @@
   "author": "Noah Veltman (@veltman)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/veltman/chopped-and-screwed/issues"
+    "url": "https://github.com/veltman/chopped-and-viewed/issues"
   },
-  "homepage": "https://github.com/veltman/chopped-and-screwed",
+  "homepage": "https://github.com/veltman/chopped-and-viewed",
   "dependencies": {
     "underscore": "~1.6.0"
   }
