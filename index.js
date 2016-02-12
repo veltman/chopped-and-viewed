@@ -1,10 +1,13 @@
 var _ = require("underscore");
 
-module.exports = function(p,f) {
-  return new Chopper(p,f);
+module.exports = function(p,f,t) {
+  if (t === undefined) {
+    t = true;
+  }
+  return new Chopper(p,f,t);
 };
 
-var Chopper = function(p,f) {
+var Chopper = function(p,f,t) {
 
   var points,
       fields = false;
@@ -29,6 +32,15 @@ var Chopper = function(p,f) {
 
   }
 
+  if (t) {
+
+    if (typeof t !== 'boolean') {
+
+      throw new Error("Trim parameter must be a boolean.");
+    }
+
+  }
+
   p.forEach(function(d){
 
     if (!_.isNumber(d) || _.isNaN(d) || d <= 0) {
@@ -48,6 +60,14 @@ var Chopper = function(p,f) {
 
   });
 
+  var getValue = function(line,d) {
+    var value = line.slice(d.start,d.start+d.length);
+    if (t === true) {
+      value = value.trim();
+    }
+    return value;
+  };
+
   if (f) {
 
     return function(line) {
@@ -55,7 +75,7 @@ var Chopper = function(p,f) {
       var dict = {};
 
       points.forEach(function(d,i){
-        dict[fields[i]] = line.slice(d.start,d.start+d.length).trim();
+        dict[fields[i]] = getValue(line,d);
       });
 
       return dict;
@@ -67,7 +87,7 @@ var Chopper = function(p,f) {
   return function(line) {
 
     return points.map(function(d){
-      return line.slice(d.start,d.start+d.length).trim();
+      return getValue(line,d);
     });
 
   }
