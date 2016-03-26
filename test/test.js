@@ -10,7 +10,7 @@ fs.readFile(source,"utf8",function(err,data){
 
   var arrayParser = cav([12,13,8,6]),
       noTrimParser = cav([12,13,8,6],true),
-      objectParser = cav([[12,"name"],[13,"description"],[8,"weapon"],[6,"color"]]);
+      objectParser = cav([["name",12],["description",13],["weapon",8],["color",6]]);
 
   assert.deepStrictEqual(
     lines.map(arrayParser),
@@ -40,10 +40,9 @@ fs.readFile(source,"utf8",function(err,data){
   [],
   ["a",1,2],
   [1,2,[3,4]],
-  [[1,"a"],[2,"b"],[3]]
-  [[1,"a"],[2,"b"],["c",3]],
+  [["a",1],["b",2],[3]],
+  [[1,"a"],[2,"b"],[3,"c"]],
   [[1,2,3],["a","b","c"]]
 ].forEach(function(badInput){
-  console.log(test);
   assert.throws(function(){ cav(badInput); });
 });

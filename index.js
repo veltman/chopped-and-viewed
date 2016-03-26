@@ -9,10 +9,10 @@ module.exports = function(columns,preserveWhitespace) {
 
   if (Array.isArray(columns[0])) {
     fields = columns.map(function(c){
-      return c[1];
+      return c[0];
     });
     widths = columns.map(function(c){
-      return c[0];
+      return c[1];
     });
   } else {
     widths = columns;
@@ -80,7 +80,7 @@ function check(columns) {
   }
 
   if (!columns.every(isNumber) && !columns.every(isPair)) {
-    throw new Error("List of column widths must be an array of numbers or an array of [number,string] pairs.");
+    throw new Error("List of column widths must be an array of numbers or an array of [string,number] pairs.");
   }
 
 }
@@ -91,5 +91,5 @@ function isNumber(d) {
 
 function isPair(d) {
   return Array.isArray(d) && d.length == 2
-  && isNumber(d[0]) && typeof d[1] === "string";
+  && isNumber(d[1]) && typeof d[0] === "string";
 }
