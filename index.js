@@ -1,75 +1,95 @@
 var _ = require("underscore");
 
-module.exports = function(p,f) {
-  return new Chopper(p,f);
+module.exports = function(columns,preserveWhitespace) {
+
+  var widths,
+      fields;
+
+  check(columns);
+
+  if (Array.isArray(columns[0])) {
+    fields = columns.map(function(c){
+      return c[1];
+    });
+    widths = columns.map(function(c){
+      return c[0];
+    });
+  } else {
+    widths = columns;
+  }
+
+  return chopper(widths,fields,!!preserveWhitespace);
+
 };
 
-var Chopper = function(p,f) {
+function chopper(widths,fields,preserveWhitespace) {
 
-  var points,
-      fields = false;
-  
-  if (!Array.isArray(p)) {
-
-    throw new Error("List of column widths must be an array.");
-
-  }
-
-  if (f) {
-
-    if (!Array.isArray(f)) {
-      throw new Error("List of field names must be an array.");
-    }
-
-    if (f.length != p.length) {
-      throw new Error("List of column widths and list of field names are different lengths.");
-    }
-
-    fields = f;
-
-  }
-
-  p.forEach(function(d){
-
-    if (!_.isNumber(d) || _.isNaN(d) || d <= 0) {
-      throw new Error(d.toString()+" is not a valid number.");
-    }
-
-  });
-
-  points = p.map(function(d,i){
-
-    return {
-      "length": d,
-      "start": i ? p.slice(0,i).reduce(function(a, b) {
-        return a + b;
-      }) : 0
-    }
-
-  });
-
-  if (f) {
-
-    return function(line) {
-
-      var dict = {};
-
-      points.forEach(function(d,i){
-        dict[fields[i]] = line.slice(d.start,d.start+d.length).trim();
-      });
-
-      return dict;
-
-    }
-
-  }
+  var points = toPoints(widths);
 
   return function(line) {
 
-    return points.map(function(d){
-      return line.slice(d.start,d.start+d.length).trim();
+    var values = points.map(function(p){
+
+      var sliced = line.slice(p[0],p[1]);
+
+      return preserveWhitespace ? sliced : sliced.trim();
+
     });
 
+    return fields ? zip(values,fields) : values;
+
+  };
+
+}
+
+function zip(values,fields) {
+
+  var dict = {};
+
+  values.forEach(function(v,i){
+    dict[fields[i]] = v;
+  });
+
+  return dict;
+
+}
+
+// http://jsperf.com/converting-widths
+function toPoints(widths) {
+
+  var before = 0,
+  		result = [];
+
+  widths.forEach(function(w){
+
+    // slice boundaries
+  	result.push([before,before + w]);
+
+  	before += w;
+
+  });
+
+  return result;
+
+}
+
+function check(columns) {
+
+  if (!Array.isArray(columns) || !columns.length) {
+    throw new Error("List of column widths must be an array.");
   }
 
+  if (!columns.every(isNumber) && !columns.every(isPair)) {
+    throw new Error("List of column widths must be an array of numbers or an array of [number,string] pairs.");
+  }
+
+}
+
+function isNumber(d) {
+  return typeof d === "number" && !isNaN(d);
+}
+
+function isPair(d) {
+  return Array.isArray(d) && d.length == 2
+  && isNumber(d[0]) && typeof d[1] === "string";
 }

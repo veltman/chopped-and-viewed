@@ -1,6 +1,6 @@
 {
   "name": "chopped-and-viewed",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "For chopping fixed-width text files into JSON or a CSV",
   "main": "index.js",
   "scripts": {
@@ -23,6 +23,5 @@
   },
   "homepage": "https://github.com/veltman/chopped-and-viewed",
   "dependencies": {
-    "underscore": "~1.6.0"
   }
 }
