@@ -12,19 +12,19 @@ fs.readFile(source,"utf8",function(err,data){
       noTrimParser = cav([12,13,8,6],true),
       objectParser = cav([["name",12],["description",13],["weapon",8],["color",6]]);
 
-  assert.deepStrictEqual(
+  assert.deepEqual(
     lines.map(arrayParser),
     [["LEONARDO","LEADS","KATANA","BLUE"],["DONATELLO","DOES MACHINES","BO STAFF","PURPLE"],["RAPHAEL","COOL BUT RUDE","SAI","RED"],["MICHELANGELO","PARTY DUDE","NUNCHUKS","ORANGE"]],
     "Failed basic parse"
   );
 
-  assert.deepStrictEqual(
+  assert.deepEqual(
     lines.map(noTrimParser),
     [["LEONARDO    ","LEADS        ","KATANA  ","BLUE  "],["DONATELLO   ","DOES MACHINES","BO STAFF","PURPLE"],["RAPHAEL     ","COOL BUT RUDE","SAI     ","RED   "],["MICHELANGELO","PARTY DUDE   ","NUNCHUKS","ORANGE"]],
     "Failed no-trim parse"
   );
 
-  assert.deepStrictEqual(
+  assert.deepEqual(
     lines.map(objectParser),
     [{name:"LEONARDO",description:"LEADS",weapon:"KATANA",color:"BLUE"},{name:"DONATELLO",description:"DOES MACHINES",weapon:"BO STAFF",color:"PURPLE"},{name:"RAPHAEL",description:"COOL BUT RUDE",weapon:"SAI",color:"RED"},{name:"MICHELANGELO",description:"PARTY DUDE",weapon:"NUNCHUKS",color:"ORANGE"}],
     "Failed object parse"
