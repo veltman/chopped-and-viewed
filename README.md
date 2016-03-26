@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/veltman/chopped-and-viewed.svg?branch=master)](https://travis-ci.org/veltman/chopped-and-viewed)
+
 chopped-and-viewed
 ==================
 
